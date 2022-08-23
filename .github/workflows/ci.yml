@@ -19,6 +19,7 @@ jobs:
       dockerfile: ${{ steps.filter.outputs.dockerfile }}
       readme: ${{ steps.filter.outputs.readme }}
     steps:
+      - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: filter
         with:

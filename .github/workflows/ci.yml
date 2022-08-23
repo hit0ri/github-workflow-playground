@@ -13,9 +13,26 @@ on:
       - edited
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      dockerfile: ${{ steps.filter.outputs.dockerfile }}
+      readme: ${{ steps.filter.outputs.readme }}
+    steps:
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            dockerfile:
+              - Dockerfile
+            readme:
+              - README.md
+
   build-docker-image:
     name: Build Docker Image
     runs-on: ubuntu-latest
+    needs: changes
+    if: ${{ needs.changes.outputs.dockerfile == 'true' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3

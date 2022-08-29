@@ -43,13 +43,21 @@ jobs:
 
       - name: Extract metadata
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: hello-ci
 
       - name: Build
-        uses: docker/build-push-action@v2
+        id: build
+        uses: docker/build-push-action@v3
         with:
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build output
+        run: |
+          echo "meta tags: ${{ steps.meta.outputs.tags }}"
+          echo "build imageid: ${{ steps.build.outputs.imageid }}"
+          echo "build digest: ${{ steps.build.outputs.digest }}"
+

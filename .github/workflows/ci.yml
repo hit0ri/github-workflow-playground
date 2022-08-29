@@ -38,8 +38,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Vulnerability scan
-        uses: aquasecurity/trivy-action@master
+        uses: anchore/scan-action@v3
         with:
-          image-ref: ${{ fromJson(steps.meta.outputs.json).tags[0] }}
-          ignore-unfixed: true
-          severity: CRITICAL,HIGH
+          image: ${{ fromJson(steps.meta.outputs.json).tags[0] }}

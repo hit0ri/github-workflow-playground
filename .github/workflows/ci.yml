@@ -38,6 +38,11 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Build output
+        run: |
+          echo "build step imageid: ${{ steps.build.outputs.imageid }}"
+          echo "build step digest: ${{ steps.build.outputs.digest }}"
+
       - name: Trivy
         uses: aquasecurity/trivy-action@master
         with:

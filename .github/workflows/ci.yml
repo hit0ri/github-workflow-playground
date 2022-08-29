@@ -39,9 +39,5 @@ jobs:
 
       - name: Build output
         run: |
-          echo "meta tags: ${{ steps.meta.outputs.tags. }}"
-          echo "meta json: ${{ steps.meta.outputs.json.tags.[0] }}"
-          echo "meta fromJson: ${{ fromJson(steps.meta.outputs.json).tags.[0] }}"
-          echo "build imageid: ${{ steps.build.outputs.imageid }}"
-          echo "build digest: ${{ steps.build.outputs.digest }}"
+          echo "${{ fromJson(steps.meta.outputs.json).tags[0] }}" 
 

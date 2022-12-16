@@ -23,7 +23,8 @@ jobs:
 
       - uses: actions/checkout@v3
 
-      - run: |
+      - name: Debug
+        run: |
           echo "github.workflow: ${{ github.workflow }}"
           echo "github.head_ref: ${{ github.head_ref }}"
           echo "github.run_id: ${{ github.run_id }}"

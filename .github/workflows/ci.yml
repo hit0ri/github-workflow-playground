@@ -20,11 +20,10 @@ jobs:
   debug:
     runs-on: ubuntu-latest
     steps:
-
       - name: Debug
         run: |
           echo "github.workflow: ${{ github.workflow }}"
           echo "github.head_ref: ${{ github.head_ref }}"
           echo "github.run_id: ${{ github.run_id }}"
-  call-reusable:
+  Build:
     uses: ./.github/workflows/reusable.yml

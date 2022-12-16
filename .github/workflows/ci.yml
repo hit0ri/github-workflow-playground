@@ -12,15 +12,21 @@ on:
       - created
       - edited
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   build-docker-image:
     name: Build Docker Image
     runs-on: ubuntu-latest
     steps:
 
-      - name: Print event name
+      - name: Debug
         run: |
-          echo "github.event_name: ${{ github.event_name }}"
+          echo "github.workflow: ${{ github.workflow }}"
+          echo "github.head_ref: ${{ github.head_ref }}"
+          echo "github.run_id: ${{ github.run_id }}"
 
       - name: Extract metadata
         id: meta

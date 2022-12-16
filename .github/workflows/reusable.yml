@@ -3,4 +3,6 @@ on:
 
 jobs:
   test:
-    - run: echo "Testing"
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Testing"

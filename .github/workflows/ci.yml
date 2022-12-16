@@ -27,6 +27,7 @@ jobs:
           echo "github.workflow: ${{ github.workflow }}"
           echo "github.head_ref: ${{ github.head_ref }}"
           echo "github.run_id: ${{ github.run_id }}"
+          sleep 30
 
       - name: Extract metadata
         id: meta

@@ -4,6 +4,12 @@ on:
   workflow_call:
 
 jobs:
+  test:
+    name: Backend Image
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Testing..."
+
   build:
     name: Backend image
     runs-on: ubuntu-latest

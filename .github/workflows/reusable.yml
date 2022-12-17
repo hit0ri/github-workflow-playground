@@ -1,13 +1,11 @@
+name: Build OCI Image
+
 on:
   workflow_call:
 
 jobs:
-  Test:
+  build:
+    name: Backend image
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Testing"
-
-  Build:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Testing"
+      - run: echo "Building..."

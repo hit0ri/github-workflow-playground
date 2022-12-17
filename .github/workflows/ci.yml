@@ -17,5 +17,5 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  Build:
     uses: ./.github/workflows/reusable.yml

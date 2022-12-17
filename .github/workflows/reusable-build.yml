@@ -1,0 +1,9 @@
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: Backend image
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Building..."

@@ -1,17 +1,8 @@
-name: Build OCI Image
-
 on:
   workflow_call:
 
 jobs:
   test:
-    name: Backend Image
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Testing..."
-
+    uses: ./.github/workflows/reusable-test.yml
   build:
-    name: Backend image
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Building..."
+    uses: ./.github/workflows/reusable-build.yml

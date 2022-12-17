@@ -17,5 +17,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  Build:
+  backend:
+    name: Backend
     uses: ./.github/workflows/reusable.yml
+    with:
+      component: backend
+  frontend:
+    name: Frontend
+    uses: ./.github/workflows/reusable.yml
+    with:
+      component: frontend

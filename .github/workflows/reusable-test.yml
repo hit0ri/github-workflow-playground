@@ -1,9 +1,13 @@
 on:
   workflow_call:
+    inputs:
+      component:
+        required: true
+        type: string
 
 jobs:
   test:
-    name: Backend Image
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - run: echo "Testing..."

@@ -1,0 +1,13 @@
+on:
+  workflow_call:
+    inputs:
+      component:
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Building..."

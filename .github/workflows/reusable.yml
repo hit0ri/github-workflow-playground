@@ -1,0 +1,17 @@
+on:
+  workflow_call:
+    inputs:
+      component:
+        required: true
+        type: string
+
+jobs:
+  test:
+    uses: ./.github/workflows/reusable-test.yml
+    with:
+      component: ${{ inputs.component }}
+  build:
+    needs: test
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      component: ${{ inputs.component }}

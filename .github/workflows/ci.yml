@@ -17,19 +17,42 @@ jobs:
     name: Build Docker Image
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Print event name
-        run: |
-          echo "github.event_name: ${{ github.event_name }}"
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v1
 
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: hello-ci
-          tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=tag
-            type=ref,event=pr
-            type=sha,event=branch,prefix={{branch}}-,enable=${{ github.event_name == 'push' }}
+
+      - name: Build
+        id: build
+        uses: docker/build-push-action@v3
+        with:
+          push: false
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build output
+        run: |
+          echo "build step imageid: ${{ steps.build.outputs.imageid }}"
+          echo "build step digest: ${{ steps.build.outputs.digest }}"
+
+      - name: Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ fromJson(steps.meta.outputs.json).tags[0] }}
+          ignore-unfixed: true
+          severity: HIGH,CRITICAL
+
+      - name: Grype
+        if: always()
+        uses: anchore/scan-action@v3
+        with:
+          image: ${{ fromJson(steps.meta.outputs.json).tags[0] }}
+

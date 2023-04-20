@@ -30,6 +30,7 @@ jobs:
     - run: printf '%s\n' "building baz..."
 
   deploy:
+    if: needs.build-bar.result == ('success' || 'skipped')
     needs:
     - build-foo
     - build-bar

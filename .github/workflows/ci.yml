@@ -23,14 +23,22 @@ jobs:
     steps:
     - run: printf '%s\n' "building bar..."
 
+  build-baz:
+    name: build baz
+    runs-on: ubuntu-latest
+    steps:
+    - run: printf '%s\n' "Failing baz..." && exit 1
+
   deploy:
     if: |
       contains(fromJSON('["success", "skipped"]'), needs.build-foo.result) &&
       contains(fromJSON('["success", "skipped"]'), needs.build-bar.result) &&
+      contains(fromJSON('["success", "skipped"]'), needs.build-baz.result) &&
       always()
     needs:
     - build-foo
     - build-bar
+    - build-baz
     name: deploy
     runs-on: ubuntu-latest
     steps:

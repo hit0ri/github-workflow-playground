@@ -14,20 +14,20 @@ jobs:
     name: build foo
     runs-on: ubuntu-latest
     steps:
-    - run: building foo...
+    - run: printf '%s\n' "building foo..."
 
   build-bar:
     name: build bar
     runs-on: ubuntu-latest
     steps:
-    - run: building bar...
+    - run: printf '%s\n' "building bar..."
 
   build-baz:
     if: false
     name: build baz
     runs-on: ubuntu-latest
     steps:
-    - run: building baz...
+    - run: printf '%s\n' "building baz..."
 
   deploy:
     needs:
@@ -37,4 +37,4 @@ jobs:
     name: deploy
     runs-on: ubuntu-latest
     steps:
-    - run: deploying...
+    - run: printf '%s\n' "deploying..."

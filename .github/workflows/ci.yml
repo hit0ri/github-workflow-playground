@@ -14,7 +14,7 @@ jobs:
     name: build foo
     runs-on: ubuntu-latest
     steps:
-    - run: printf '%s\n' "building foo..." && exit 1
+    - run: printf '%s\n' "building foo..."
 
   build-bar:
     if: false

@@ -26,7 +26,8 @@ jobs:
   deploy:
     if: |
       contains(fromJSON('["success", "skipped"]'), needs.build-foo.result) &&
-      contains(fromJSON('["success", "skipped"]'), needs.build-bar.result)
+      contains(fromJSON('["success", "skipped"]'), needs.build-bar.result) &&
+      always()
     needs:
     - build-foo
     - build-bar

@@ -30,10 +30,9 @@ jobs:
     - run: printf '%s\n' "building baz..."
 
   deploy:
-    if: |
-      ${{ contains(fromJSON('["success", "skipped"]'), needs.build-foo.result) &&
-          contains(fromJSON('["success", "skipped"]'), needs.build-bar.result) &&
-          contains(fromJSON('["success", "skipped"]'), needs.build-baz.result) }}
+    if: ${{ contains(fromJSON('["success", "skipped"]'), needs.build-foo.result) &&
+            contains(fromJSON('["success", "skipped"]'), needs.build-bar.result) &&
+            contains(fromJSON('["success", "skipped"]'), needs.build-baz.result) }}
     needs:
     - build-foo
     - build-bar

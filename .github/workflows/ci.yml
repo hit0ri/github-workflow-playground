@@ -17,26 +17,21 @@ jobs:
     - run: printf '%s\n' "building foo..."
 
   build-bar:
+    if: false
     name: build bar
     runs-on: ubuntu-latest
     steps:
     - run: printf '%s\n' "building bar..."
 
-  build-baz:
-    if: false
-    name: build baz
-    runs-on: ubuntu-latest
-    steps:
-    - run: printf '%s\n' "building baz..."
-
   deploy:
-    if: ${{ contains(fromJSON('["success", "skipped"]'), needs.build-foo.result) &&
-            contains(fromJSON('["success", "skipped"]'), needs.build-bar.result) &&
-            contains(fromJSON('["success", "skipped"]'), needs.build-baz.result) }}
+    if: |
+      ${{ contains(fromJSON('["success", "skipped"]'), needs.build-foo.result) &&
+          contains(fromJSON('["success", "skipped"]'), needs.build-bar.result) &&
+          always()
+      }}
     needs:
     - build-foo
     - build-bar
-    - build-baz
     name: deploy
     runs-on: ubuntu-latest
     steps:
@@ -47,7 +42,6 @@ jobs:
     needs:
       - build-foo
       - build-bar
-      - build-baz
     name: debug
     runs-on: ubuntu-latest
     steps:
@@ -61,16 +55,11 @@ jobs:
         EOF
     - run: |
         cat <<EOF
-          ${{ contains(fromJSON('["success", "skipped"]'), needs.build-baz.result) }}
-        EOF
-    - run: |
-        cat <<EOF
           ${{ contains(fromJSON('["success", "skipped"]'), needs.build-foo.result) &&
-              contains(fromJSON('["success", "skipped"]'), needs.build-bar.result) &&
-              contains(fromJSON('["success", "skipped"]'), needs.build-baz.result)
+              contains(fromJSON('["success", "skipped"]'), needs.build-bar.result)
           }}
         EOF
     - run: |
         cat <<EOF
-          ${{ needs.build-baz.result == 'success' || needs.build-baz.result == 'skipped' }}
+          ${{ needs.build-bar.result == 'success' || needs.build-bar.result == 'skipped' }}
         EOF

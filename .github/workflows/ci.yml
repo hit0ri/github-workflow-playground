@@ -3,33 +3,38 @@ name: CI
 on:
   pull_request:
   push:
-    branches:
-      - main
-      - qa
   release:
     types:
-      - published
-      - created
-      - edited
+    - published
+    - created
+    - edited
 
 jobs:
-  build-docker-image:
-    name: Build Docker Image
+  build-foo:
+    name: build foo
     runs-on: ubuntu-latest
     steps:
+    - run: building foo...
 
-      - name: Print event name
-        run: |
-          echo "github.event_name: ${{ github.event_name }}"
+  build-bar:
+    name: build bar
+    runs-on: ubuntu-latest
+    steps:
+    - run: building bar...
 
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: hello-ci
-          tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=tag
-            type=ref,event=pr
-            type=sha,event=branch,prefix={{branch}}-,enable=${{ github.event_name == 'push' }}
+  build-baz:
+    if: false
+    name: build baz
+    runs-on: ubuntu-latest
+    steps:
+    - run: building baz...
+
+  deploy:
+    needs:
+    - build-foo
+    - build-bar
+    - build-baz
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+    - run: deploying...

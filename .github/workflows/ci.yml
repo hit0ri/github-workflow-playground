@@ -30,7 +30,7 @@ jobs:
     - run: printf '%s\n' "building baz..."
 
   deploy:
-    if: needs.build-bar.result == ('success' || 'skipped')
+    if: contains(fromJSON('["success", "skipped"]'), needs.build-bar.result)
     needs:
     - build-foo
     - build-bar

@@ -42,3 +42,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: printf '%s\n' "deploying..."
+
+  debug:
+    if: ${{ always() }}
+    needs:
+      - build-foo
+      - build-bar
+      - build-baz
+    name: debug
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        cat <<EOF
+          ${{ contains(fromJSON('["success", "skipped"]'), needs.build-foo.result) }}
+        EOF
+    - run: |
+        cat <<EOF
+          ${{ contains(fromJSON('["success", "skipped"]'), needs.build-bar.result) }}
+        EOF
+    - run: |
+        cat <<EOF
+          ${{ contains(fromJSON('["success", "skipped"]'), needs.build-baz.result) }}
+        EOF
+    - run: |
+        cat <<EOF
+          ${{ contains(fromJSON('["success", "skipped"]'), needs.build-foo.result) &&
+              contains(fromJSON('["success", "skipped"]'), needs.build-bar.result) &&
+              contains(fromJSON('["success", "skipped"]'), needs.build-baz.result)
+          }}
+        EOF
+    - run: |
+        cat <<EOF
+          ${{ needs.build-baz.result == 'success' || needs.build-baz.result == 'skipped' }}
+        EOF

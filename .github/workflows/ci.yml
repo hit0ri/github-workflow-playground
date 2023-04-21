@@ -31,10 +31,8 @@ jobs:
 
   deploy:
     if: |
-      contains(fromJSON('["success", "skipped"]'), needs.build-foo.result) &&
-      contains(fromJSON('["success", "skipped"]'), needs.build-bar.result) &&
-      contains(fromJSON('["success", "skipped"]'), needs.build-baz.result) &&
-      always()
+      always() &&
+      contains(needs.*.result, fromJSON('["success", "skipped"]'))
     needs:
     - build-foo
     - build-bar
@@ -43,9 +41,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: printf '%s\n' "deploying..."
+    - run: |
+        cat > values.yaml <<EOF
+        foo:
+          bar: baz
+        github:
+          run_id: ""
+        EOF
+    - uses: mikefarah/yq@v4
+      with:
+        cmd: yq -i '.github.run_id = "${{ github.run_id }}"' values.yaml
+    - run: cat values.yaml
 
   debug:
-    if: ${{ always() }}
+    if: always()
     needs:
       - build-foo
       - build-bar
@@ -54,19 +63,14 @@ jobs:
     steps:
     - run: |
         cat <<EOF
-          ${{ contains(fromJSON('["success", "skipped"]'), needs.build-foo.result) }}
+          contains(fromJSON('["success", "skipped"]'), needs.*.result)
         EOF
     - run: |
         cat <<EOF
-          ${{ contains(fromJSON('["success", "skipped"]'), needs.build-bar.result) }}
+          contains(needs.*.result, fromJSON('["success", "skipped"]'))
         EOF
     - run: |
         cat <<EOF
-          ${{ contains(fromJSON('["success", "skipped"]'), needs.build-foo.result) &&
-              contains(fromJSON('["success", "skipped"]'), needs.build-bar.result)
-          }}
-        EOF
-    - run: |
-        cat <<EOF
-          ${{ needs.build-bar.result == 'success' || needs.build-bar.result == 'skipped' }}
+          always() &&
+          contains(needs.*.result, fromJSON('["success", "skipped"]'))
         EOF

@@ -63,20 +63,9 @@ jobs:
     steps:
     - run: |
         cat <<EOF
-        ${{
-          contains(fromJSON('["success", "skipped"]'), needs.*.result)
-        }}
+          ${{ contains(fromJSON('["success", "skipped"]'), needs.*.result) }}
         EOF
     - run: |
         cat <<EOF
-        ${{
-          contains(needs.*.result, fromJSON('["success", "skipped"]'))
-        }}
-        EOF
-    - run: |
-        cat <<EOF
-        ${{
-          always() &&
-          contains(needs.*.result, fromJSON('["success", "skipped"]'))
-        }}
+          ${{ contains(needs.*.result, fromJSON('["success", "skipped"]')) }}
         EOF

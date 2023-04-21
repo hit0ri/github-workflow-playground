@@ -32,7 +32,8 @@ jobs:
   deploy:
     if: |
       always() &&
-      contains(needs.*.result, fromJSON('["success", "skipped"]'))
+      !contains(needs.*.result, 'failure') &&
+      !contains(needs.*.result, 'cancelled')
     needs:
     - build-foo
     - build-bar
@@ -63,9 +64,6 @@ jobs:
     steps:
     - run: |
         cat <<EOF
-          ${{ contains(fromJSON('["success", "skipped"]'), needs.*.result) }}
-        EOF
-    - run: |
-        cat <<EOF
-          ${{ contains(needs.*.result, fromJSON('["success", "skipped"]')) }}
+          ${{ !contains(needs.*.result, 'failure') &&
+          !contains(needs.*.result, 'cancelled') }}
         EOF

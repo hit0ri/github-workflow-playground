@@ -27,7 +27,7 @@ jobs:
     name: build baz
     runs-on: ubuntu-latest
     steps:
-    - run: printf '%s\n' "Failing baz..." && exit 1
+    - run: printf '%s\n' "building baz..."
 
   deploy:
     if: |
@@ -63,14 +63,20 @@ jobs:
     steps:
     - run: |
         cat <<EOF
+        ${{
           contains(fromJSON('["success", "skipped"]'), needs.*.result)
+        }}
         EOF
     - run: |
         cat <<EOF
+        ${{
           contains(needs.*.result, fromJSON('["success", "skipped"]'))
+        }}
         EOF
     - run: |
         cat <<EOF
+        ${{
           always() &&
           contains(needs.*.result, fromJSON('["success", "skipped"]'))
+        }}
         EOF

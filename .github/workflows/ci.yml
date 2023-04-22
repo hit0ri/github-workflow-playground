@@ -42,17 +42,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: printf '%s\n' "deploying..."
-    - run: |
-        cat > values.yaml <<EOF
-        foo:
-          bar: baz
-        github:
-          run_id: ""
-        EOF
-    - run: cat values.yaml
     - uses: mikefarah/yq@v4
       with:
-        cmd: yq -i '.github.run_id = "${{ github.run_id }}"' 'values.yaml'
+        cmd: yq -i '.github.run_id = "${{ github.run_id }}"' values.yaml
     - run: cat values.yaml
 
   debug:

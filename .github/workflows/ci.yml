@@ -42,8 +42,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: printf '%s\n' "deploying..."
-    - run: stat values.yaml
-    - uses: mikefarah/yq@master
+    - uses: actions/checkout@v3
+    - uses: mikefarah/yq@v4
       with:
         cmd: yq -i '.github.run_id = "${{ github.run_id }}"' values.yaml
     - run: cat values.yaml

@@ -10,55 +10,14 @@ on:
     - edited
 
 jobs:
-  build-foo:
-    name: build foo
+  commit:
     runs-on: ubuntu-latest
     steps:
-    - run: printf '%s\n' "building foo..."
-
-  build-bar:
-    if: false
-    name: build bar
-    runs-on: ubuntu-latest
-    steps:
-    - run: printf '%s\n' "building bar..."
-
-  build-baz:
-    name: build baz
-    runs-on: ubuntu-latest
-    steps:
-    - run: printf '%s\n' "building baz..."
-
-  deploy:
-    if: |
-      always() &&
-      !contains(needs.*.result, 'failure') &&
-      !contains(needs.*.result, 'cancelled')
-    needs:
-    - build-foo
-    - build-bar
-    - build-baz
-    name: deploy
-    runs-on: ubuntu-latest
-    steps:
-    - run: printf '%s\n' "deploying..."
     - uses: actions/checkout@v3
-    - run: ls -l
     - uses: mikefarah/yq@master
       with:
         cmd: yq -i '.github.run_id = "${{ github.run_id }}"' values.yaml
     - run: cat values.yaml
-
-  debug:
-    if: always()
-    needs:
-      - build-foo
-      - build-bar
-    name: debug
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        cat <<EOF
-          ${{ !contains(needs.*.result, 'failure') &&
-          !contains(needs.*.result, 'cancelled') }}
-        EOF
+    - uses: EndBug/add-and-commit@v9
+      with:
+        message: 'Update run id image to ${{ github.run_id }}'

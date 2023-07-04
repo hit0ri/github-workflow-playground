@@ -21,3 +21,5 @@ jobs:
     steps:
       - run: |
           echo "Deploying to ${{ matrix.env }}..."
+      - run: |
+          echo "Deployed to ${{ matrix.env }}..."

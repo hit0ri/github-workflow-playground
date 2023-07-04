@@ -9,7 +9,15 @@ on:
     - created
     - edited
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Building..."
   deploy:
     runs-on: ubuntu-latest
     strategy:
